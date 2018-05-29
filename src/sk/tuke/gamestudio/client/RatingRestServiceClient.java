@@ -11,24 +11,23 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-public class RatingRestServiceClient implements RatingService
-{
+public class RatingRestServiceClient implements RatingService {
     private static final String URL = "http://localhost:8080/gamestudio_war_exploded/api/rating";
 
     @Override
     public void addRating(Rating rating) {
-        if(rating.getRating()>10){
+        if (rating.getRating() > 10) {
             rating.setRating(10);
         }
-        if(rating.getRating()<1){
+        if (rating.getRating() < 1) {
             rating.setRating(1);
         }
         try {
             Client client = ClientBuilder.newClient();
-            Response response = client.target(URL+"/new")
+            Response response = client.target(URL + "/new")
                     .request(MediaType.APPLICATION_JSON)
                     .post(Entity.entity(rating, MediaType.APPLICATION_JSON), Response.class);
-            } catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException("Error uploading rating", e);
         }
     }
@@ -42,7 +41,7 @@ public class RatingRestServiceClient implements RatingService
     @Override
     public String getAvgRating(String game) {
 
-        String rating="UNRATED YET";
+        String rating = "UNRATED YET";
         try {
             Client client = ClientBuilder.newClient();
             rating = client.target(URL)
@@ -52,13 +51,13 @@ public class RatingRestServiceClient implements RatingService
                     });
         } catch (Exception e) {
             //System.err.println("Error loading rating "+ e);
-            System.out.println(game+"\n      --> unrated yet");
+            System.out.println(game + "\n      --> unrated yet");
 
         }
-        rating = rating.substring(0,(rating.length()<4 ? rating.length() : 4));
+        rating = rating.substring(0, (rating.length() < 4 ? rating.length() : 4));
 
-        game = game.substring(0,1).toUpperCase()+game.substring(1);
-        System.out.println(game+"\n      --> " +rating+"/10\n");
+        game = game.substring(0, 1).toUpperCase() + game.substring(1);
+        System.out.println(game + "\n      --> " + rating + "/10\n");
 
         return rating;
     }

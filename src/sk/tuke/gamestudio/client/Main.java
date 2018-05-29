@@ -10,12 +10,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+//todo implementovat delet na score, comment, edit na comment, vymysliet este dajaky mdb
+
 public class Main {
     private static BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     private static RatingRestServiceClient ratingService = new RatingRestServiceClient();
     private static CommentRestServiceClient commentService = new CommentRestServiceClient();
     private static ScoreRestServiceClient scoreService = new ScoreRestServiceClient();
-    private static boolean firstGamePlayed =false;
+    private static boolean firstGamePlayed = false;
     private static Game game;
 
 
@@ -24,68 +26,65 @@ public class Main {
         System.out.println("enter your name: ");
         String username = readLine();
         System.out.println("what would you like to play?");
-       while(true) {
-           int i=1;
-           for (Games g: Games.values()){
-               System.out.println(i+". "+g.toString());
-               i++;
-           }
+        while (true) {
+            int i = 1;
+            for (Games g : Games.values()) {
+                System.out.println(i + ". " + g.toString());
+                i++;
+            }
 
-           System.out.println(i+ ". View tables\nAnything else: Exit");
-           int s = Integer.parseInt(readLine());
+            System.out.println(i + ". View tables\nAnything else: Exit");
+            int s = Integer.parseInt(readLine());
 
-           switch(s) {
-               case 1:
-                   game = new Minesweeper(username);
-                   firstGamePlayed=true;
-                   break;
-               case 2:
-                   game = new Kamene(username);
-                   firstGamePlayed = true;
-                   break;
-               case 3:
-                   game = new Pexeso(username);
-                   firstGamePlayed = true;
-                   break;
-               case 4:
-                   Tableviewer.additionalChoices();
-                   break;
-               default:
-               System.out.println("See you some other time!");
-               System.exit(0);
-           }
-           if(firstGamePlayed) {
-               System.out.println("Thank you for playing! would you like to leave us a comment? y/n");
-               String c = readLine();
-               if (c.equals("y")) {
-                   System.out.println("write your comment here: ");
-                   c = readLine();
-                   Comment comment = new Comment(username, game.getGameName(), c);
-                   commentService.addComment(comment);
+            switch (s) {
+                case 1:
+                    game = new Minesweeper(username);
+                    firstGamePlayed = true;
+                    break;
+                case 2:
+                    game = new Kamene(username);
+                    firstGamePlayed = true;
+                    break;
+                case 3:
+                    game = new Pexeso(username);
+                    firstGamePlayed = true;
+                    break;
+                case 4:
+                    Tableviewer.additionalChoices();
+                    break;
+                default:
+                    System.out.println("See you some other time!");
+                    System.exit(0);
+            }
+            if (firstGamePlayed) {
+                System.out.println("Thank you for playing! would you like to leave us a comment? y/n");
+                String c = readLine();
+                if (c.equals("y")) {
+                    System.out.println("write your comment here: ");
+                    c = readLine();
+                    Comment comment = new Comment(username, game.getGameName(), c);
+                    commentService.addComment(comment);
 
-               }
-               System.out.println("Would you like to rate our game? y/n");
-               c = readLine();
+                }
+                System.out.println("Would you like to rate our game? y/n");
+                c = readLine();
 
-               if (c.equals("y")) {
-                   System.out.println("enter your rating (1-10) : ");
-                   c = readLine();
-                   int rate = Integer.parseInt(c);
-                   Rating rating = new Rating(username, game.getGameName(), rate);
+                if (c.equals("y")) {
+                    System.out.println("enter your rating (1-10) : ");
+                    c = readLine();
+                    int rate = Integer.parseInt(c);
+                    Rating rating = new Rating(username, game.getGameName(), rate);
 
-                   ratingService.addRating(rating);
-               }
-           }
+                    ratingService.addRating(rating);
+                }
+            }
 
-           firstGamePlayed = false;
+            firstGamePlayed = false;
 
-           System.out.println("Thank you for playing! would you like to play another game?");
-       }
+            System.out.println("Thank you for playing! would you like to play another game?");
+        }
 
     }
-
-
-
 
 
     private static String readLine() {

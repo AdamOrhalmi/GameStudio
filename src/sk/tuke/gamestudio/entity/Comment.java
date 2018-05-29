@@ -9,7 +9,9 @@ import javax.persistence.*;
                 query = "SELECT c FROM Comment c WHERE c.game=:game "),
 
         @NamedQuery(name = "Comment.getAllComments",
-                query = "SELECT c FROM Comment c ORDER BY c.game")
+                query = "SELECT c FROM Comment c ORDER BY c.game"),
+        @NamedQuery(name ="Comment.getCommentByID",
+        query = "SELECT c FROM Comment c WHERE c.ident=:id")
 
 })
 

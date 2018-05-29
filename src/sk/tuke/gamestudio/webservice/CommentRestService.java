@@ -38,4 +38,18 @@ private CommentService commentService;
        return commentService.getAllComments();
     }
 
+    @DELETE
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public void deleteComment (@PathParam("id") int id){
+        commentService.deleteComment(id);
+    }
+
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Comment getComment (@PathParam("id") int id){
+        return commentService.getComment(id);
+    }
+
 }

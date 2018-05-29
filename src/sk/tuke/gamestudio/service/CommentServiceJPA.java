@@ -34,5 +34,22 @@ public class CommentServiceJPA implements CommentService {
                 .getResultList();
     }
 
+    @Override
+    public void editComment(Comment comment) {
+        entityManager.merge(comment);
+
+    }
+
+    public Comment getComment(int id){
+       return (Comment) entityManager.createNamedQuery("Comment.getCommentByID")
+                .setParameter("id", id).getSingleResult();
+    }
+
+
+    @Override
+    public void deleteComment(int id) {
+        entityManager.remove(getComment(id));
+    }
+
 
 }

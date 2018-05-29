@@ -34,20 +34,20 @@ public class ScoreServiceImplJPA implements ScoreService {
     }
 
     @Override
-    public List getBestScoresForGame(String game) throws ScoreException {
+    public List<Score> getBestScoresForGame(String game) throws ScoreException {
         return entityManager.createNamedQuery("Score.getBestScoresForGame")
                 .setParameter("game", game).setMaxResults(10).getResultList();
+    }
+
+    @Override
+    public List<Score> getScoresByUser(String name) {
+        return entityManager.createNamedQuery("Score.getBestScoresByUser")
+                .getResultList();
     }
 
 
     public Score getScore(Integer id) {
         return entityManager.find(Score.class, id);
-    }
-
-    public Score editScore(Score score) {
-
-        return entityManager.merge(score);
-
     }
 
     public void removeScore(Integer id) {

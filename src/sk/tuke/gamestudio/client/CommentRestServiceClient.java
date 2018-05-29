@@ -21,7 +21,7 @@ public class CommentRestServiceClient implements CommentService {
 
         try {
             Client client = ClientBuilder.newClient();
-            Response response = client.target(URL+"/new")
+            Response response = client.target(URL + "/new")
                     .request(MediaType.APPLICATION_JSON)
                     .post(Entity.entity(comment, MediaType.APPLICATION_JSON), Response.class);
 
@@ -59,17 +59,52 @@ public class CommentRestServiceClient implements CommentService {
         }
     }
 
+    @Override
+    public void editComment(Comment comment) {
+
+        try {
+            Client client = ClientBuilder.newClient();
+            Response response = client.target(URL)
+                    .request(MediaType.APPLICATION_JSON)
+                    .post(Entity.entity(comment, MediaType.APPLICATION_JSON), Response.class);
+        } catch (Exception e) {
+            throw new RuntimeException("Error saving score", e);
+        }
+
+    }
+
+    @Override
+    public Comment getComment(int id) {
+        return null;
+    }
+
+    @Override
+    public void deleteComment(int id) {
+
+        try {
+            Client client = ClientBuilder.newClient();
+            Response response = client.target(URL).path("/"+id)
+                    .request(MediaType.APPLICATION_JSON)
+                    .delete();
+        } catch (Exception e) {
+            throw new RuntimeException("Error saving score", e);
+        }
+
+
+    }
+
     public void printComments(List<Comment> commentList) {
-        if (commentList.isEmpty()){
+        if (commentList.isEmpty()) {
             System.out.println("This bitch empty!");
             return;
         }
         System.out.println("User comments: ");
         for (int i = 0; i < commentList.size(); i++) {
             String gamename = commentList.get(i).getGame();
-            gamename = gamename.substring(0,1).toUpperCase()+gamename.substring(1);
-            System.out.println("User "+commentList.get(i).getUsername()+"\n       commented on game "+gamename+ ": \n           "+commentList.get(i).getComment());
+            gamename = gamename.substring(0, 1).toUpperCase() + gamename.substring(1);
+            System.out.println("User " + commentList.get(i).getUsername() + "\n       commented on game " + gamename + ": \n           " + commentList.get(i).getComment());
         }
     }
 
 }
+//todo implementovat delet na score, comment, edit na comment, vymysliet este dajaky mdb

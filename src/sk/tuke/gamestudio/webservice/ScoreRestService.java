@@ -40,18 +40,8 @@ public class ScoreRestService {
         else return Response.ok(s).build();
     }
 
-    @PUT
-    @Path("/idedit/{id}")
-    @Produces("application/json")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Score editScore (@PathParam("id") Integer id,  Score score){
-        score.setIdent(id);
-        return scoreService.editScore(score);
-
-    }
-
     @DELETE
-    @Path("/iddelete/{id}")
+    @Path("/{id}")
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response removeScore (@PathParam("id") Integer id){
@@ -59,7 +49,12 @@ public class ScoreRestService {
        return Response.ok().build();
 
     }
-
+    @GET
+    @Path("/byuser/{user}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Score> getScoresByUser(@PathParam("user")String user){
+        return scoreService.getScoresByUser(user);
+    }
 
 
 
