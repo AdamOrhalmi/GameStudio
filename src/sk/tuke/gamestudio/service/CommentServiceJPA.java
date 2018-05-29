@@ -35,6 +35,13 @@ public class CommentServiceJPA implements CommentService {
     }
 
     @Override
+    public List getCommentsByUser(String username) {
+        return entityManager.createNamedQuery("Comment.getCommentsByUser")
+                .setParameter("username", username)
+                .getResultList();
+    }
+
+    @Override
     public void editComment(Comment comment) {
         entityManager.merge(comment);
 

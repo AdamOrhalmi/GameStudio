@@ -32,6 +32,13 @@ private CommentService commentService;
     }
 
     @GET
+    @Path("/byUser/{username}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List getCommentsByUser (@PathParam("username") String username){
+        return commentService.getCommentsByUser(username);
+    }
+
+    @GET
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
     public List getAllComments (){
@@ -51,5 +58,13 @@ private CommentService commentService;
     public Comment getComment (@PathParam("id") int id){
         return commentService.getComment(id);
     }
+
+    @POST
+    @Path("/edit")
+    @Produces(MediaType.APPLICATION_JSON)
+    public void editComment (Comment comment ){
+        commentService.editComment(comment);
+    }
+
 
 }

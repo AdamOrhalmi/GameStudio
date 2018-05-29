@@ -174,7 +174,8 @@ public ConsoleUI(String name){
 
     }
     public void saveScore (int time, String name){
-        int points = (field.getMineCount())/(field.getRowCount()*field.getColumnCount())*10000;
+
+        int points = field.getMineCount()*field.getRowCount()*field.getColumnCount();
         Score s = new Score(name, "Minesweeper", points-time, java.util.Date.from(Instant.now()));
         scoreServiceClient.addScore(s);
     }

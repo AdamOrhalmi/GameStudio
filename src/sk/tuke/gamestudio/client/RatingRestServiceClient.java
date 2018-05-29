@@ -34,7 +34,16 @@ public class RatingRestServiceClient implements RatingService {
 
     @Override
     public List getRating() {
-        return null;
+        try {
+            Client client = ClientBuilder.newClient();
+            return client.target(URL)
+                    .path("/all")
+                    .request(MediaType.APPLICATION_JSON)
+                    .get(new GenericType<List<Rating>>() {
+                    });
+        } catch (Exception e) {
+            throw new RuntimeException("Error loading rating", e);
+        }
     }
 
 
@@ -62,8 +71,5 @@ public class RatingRestServiceClient implements RatingService {
         return rating;
     }
 
-    @Override
-    public int setRating(Rating rating) {
-        return 0;
-    }
+
 }

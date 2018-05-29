@@ -40,7 +40,7 @@ public class CommentRestServiceClient implements CommentService {
                     .get(new GenericType<List<Comment>>() {
                     });
         } catch (Exception e) {
-            throw new RuntimeException("Error loading score", e);
+            throw new RuntimeException("Error loading comment", e);
         }
 
     }
@@ -55,7 +55,21 @@ public class CommentRestServiceClient implements CommentService {
                     .get(new GenericType<List<Comment>>() {
                     });
         } catch (Exception e) {
-            throw new RuntimeException("Error loading score", e);
+            throw new RuntimeException("Error loading comments", e);
+        }
+    }
+
+    @Override
+    public List<Comment> getCommentsByUser(String username) {
+        try {
+            Client client = ClientBuilder.newClient();
+            return client.target(URL)
+                    .path("/byUser/" + username)
+                    .request(MediaType.APPLICATION_JSON)
+                    .get(new GenericType<List<Comment>>() {
+                    });
+        } catch (Exception e) {
+            throw new RuntimeException("Error loading comment", e);
         }
     }
 
@@ -68,14 +82,23 @@ public class CommentRestServiceClient implements CommentService {
                     .request(MediaType.APPLICATION_JSON)
                     .post(Entity.entity(comment, MediaType.APPLICATION_JSON), Response.class);
         } catch (Exception e) {
-            throw new RuntimeException("Error saving score", e);
+            throw new RuntimeException("Error saving comment", e);
         }
 
     }
 
     @Override
     public Comment getComment(int id) {
-        return null;
+        try {
+            Client client = ClientBuilder.newClient();
+            return client.target(URL)
+                    .path("/"+id)
+                    .request(MediaType.APPLICATION_JSON)
+                    .get(new GenericType<Comment>() {
+                    });
+        } catch (Exception e) {
+            throw new RuntimeException("Error loading comments", e);
+        }
     }
 
     @Override
@@ -87,7 +110,7 @@ public class CommentRestServiceClient implements CommentService {
                     .request(MediaType.APPLICATION_JSON)
                     .delete();
         } catch (Exception e) {
-            throw new RuntimeException("Error saving score", e);
+            throw new RuntimeException("Error deleting comment", e);
         }
 
 
@@ -98,11 +121,11 @@ public class CommentRestServiceClient implements CommentService {
             System.out.println("This bitch empty!");
             return;
         }
-        System.out.println("User comments: ");
+        System.out.println("User comments: \n");
         for (int i = 0; i < commentList.size(); i++) {
             String gamename = commentList.get(i).getGame();
             gamename = gamename.substring(0, 1).toUpperCase() + gamename.substring(1);
-            System.out.println("User " + commentList.get(i).getUsername() + "\n       commented on game " + gamename + ": \n           " + commentList.get(i).getComment());
+            System.out.println((i+1) + ". User " + commentList.get(i).getUsername() + "\n       commented on game " + gamename + ": \n           " + commentList.get(i).getComment());
         }
     }
 

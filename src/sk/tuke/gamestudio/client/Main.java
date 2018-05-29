@@ -10,7 +10,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-//todo implementovat delet na score, comment, edit na comment, vymysliet este dajaky mdb
+
 
 public class Main {
     private static BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
@@ -19,12 +19,21 @@ public class Main {
     private static ScoreRestServiceClient scoreService = new ScoreRestServiceClient();
     private static boolean firstGamePlayed = false;
     private static Game game;
-
+    private static Tableviewer tb = new Tableviewer();
 
     public static void main(String[] args) {
+
         System.out.println("welcome to GameStudio!");
         System.out.println("enter your name: ");
         String username = readLine();
+
+        if (username.equals("")) {
+            username = System.getProperty("user.name");
+        }
+
+       tb.setUsername(username);
+
+
         System.out.println("what would you like to play?");
         while (true) {
             int i = 1;
@@ -50,7 +59,7 @@ public class Main {
                     firstGamePlayed = true;
                     break;
                 case 4:
-                    Tableviewer.additionalChoices();
+                    tb.additionalChoices();
                     break;
                 default:
                     System.out.println("See you some other time!");
@@ -64,7 +73,6 @@ public class Main {
                     c = readLine();
                     Comment comment = new Comment(username, game.getGameName(), c);
                     commentService.addComment(comment);
-
                 }
                 System.out.println("Would you like to rate our game? y/n");
                 c = readLine();
@@ -81,7 +89,7 @@ public class Main {
 
             firstGamePlayed = false;
 
-            System.out.println("Thank you for playing! would you like to play another game?");
+            System.out.println("Thank you! What would you like to play now?");
         }
 
     }

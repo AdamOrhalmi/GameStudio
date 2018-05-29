@@ -11,7 +11,9 @@ import javax.persistence.*;
         @NamedQuery(name = "Comment.getAllComments",
                 query = "SELECT c FROM Comment c ORDER BY c.game"),
         @NamedQuery(name ="Comment.getCommentByID",
-        query = "SELECT c FROM Comment c WHERE c.ident=:id")
+        query = "SELECT c FROM Comment c WHERE c.ident=:id"),
+        @NamedQuery(name = "Comment.getCommentsByUser",
+        query = "SELECT c FROM Comment c WHERE c.username=:username")
 
 })
 
@@ -56,5 +58,9 @@ public class Comment {
 
     public void setGame(String game) {
         this.game = game;
+    }
+
+    public int getIdent() {
+        return ident;
     }
 }

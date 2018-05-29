@@ -9,5 +9,5 @@ public interface RatingService {
     void addRating (Rating rating);
     List getRating ();
     String getAvgRating(String game);
-    int setRating (Rating rating);
+
 }

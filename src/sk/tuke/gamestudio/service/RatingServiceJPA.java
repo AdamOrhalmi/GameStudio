@@ -4,6 +4,7 @@ package sk.tuke.gamestudio.service;
 import sk.tuke.gamestudio.entity.Rating;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
@@ -15,20 +16,18 @@ public class RatingServiceJPA implements RatingService{
 
 
     public void addRating (Rating rating){
-        List<Rating> ratingList = getRating();
-        for (Rating r:ratingList){
-            if (r.getGame().equals(rating.getGame())&&r.getUsername().equals(rating.getUsername())){
-//                r.setRating(rating.getRating());
-//                entityManager.merge(r);
-                entityManager.createNamedQuery("Rating.updateRating")
-                        .setParameter("rating", rating.getRating())
-                        .setParameter("game",rating.getGame())
-                        .setParameter("username",rating.getUsername()
-                        );
-                return;
-            }
+        Rating r;
+        try {
+            r = (Rating) entityManager.createNamedQuery("Rating.getExactRating")
+                    .setParameter("game", rating.getGame())
+                    .setParameter("username", rating.getUsername())
+                    .getSingleResult();
+        }catch (NoResultException e){
+            entityManager.persist(rating);
+            return;
         }
-        entityManager.persist(rating);
+        r.setRating(rating.getRating());
+        entityManager.merge(r);
     }
 
     public List getRating (){
@@ -41,18 +40,6 @@ public class RatingServiceJPA implements RatingService{
                 .setParameter("game", game).getSingleResult().toString();
     }
 
-    public int setRating (Rating rating){
-
-        String s= "Rating.getExactRating";
-        Rating r = (Rating) entityManager.createNamedQuery(s)
-                .setParameter("game", rating.getGame())
-                .setParameter("username", rating.getUsername()).getSingleResult();
-        if(r.equals(null)){
-            entityManager.persist(rating);
-
-        }else {entityManager.merge(rating);}
-        return 1;
-    }
 
 
 }
