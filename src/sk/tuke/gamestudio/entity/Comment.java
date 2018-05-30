@@ -63,4 +63,18 @@ public class Comment {
     public int getIdent() {
         return ident;
     }
+
+    public void setIdent(int ident) {
+        this.ident = ident;
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "ident=" + ident +
+                ", username='" + username + '\'' +
+                ", comment='" + comment + '\'' +
+                ", game='" + game + '\'' +
+                '}';
+    }
 }

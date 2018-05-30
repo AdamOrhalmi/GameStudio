@@ -79,6 +79,7 @@ public class CommentRestServiceClient implements CommentService {
         try {
             Client client = ClientBuilder.newClient();
             Response response = client.target(URL)
+                    .path("/edit")
                     .request(MediaType.APPLICATION_JSON)
                     .post(Entity.entity(comment, MediaType.APPLICATION_JSON), Response.class);
         } catch (Exception e) {
@@ -102,13 +103,14 @@ public class CommentRestServiceClient implements CommentService {
     }
 
     @Override
-    public void deleteComment(int id) {
+    public void deleteComment(Comment comment ) {
 
         try {
             Client client = ClientBuilder.newClient();
-            Response response = client.target(URL).path("/"+id)
+            Response response = client.target(URL)
+                    .path("/" + comment.getIdent())
                     .request(MediaType.APPLICATION_JSON)
-                    .delete();
+                    .delete(Response.class);
         } catch (Exception e) {
             throw new RuntimeException("Error deleting comment", e);
         }
@@ -125,7 +127,10 @@ public class CommentRestServiceClient implements CommentService {
         for (int i = 0; i < commentList.size(); i++) {
             String gamename = commentList.get(i).getGame();
             gamename = gamename.substring(0, 1).toUpperCase() + gamename.substring(1);
-            System.out.println((i+1) + ". User " + commentList.get(i).getUsername() + "\n       commented on game " + gamename + ": \n           " + commentList.get(i).getComment());
+            System.out.println((i+1) + ". User " + commentList.get(i).getUsername()
+                    + "\n       commented on game " + gamename + ": \n           "
+                    + commentList.get(i).getComment()
+                    +"\n        COMMENTID: "+commentList.get(i).getIdent());
         }
     }
 

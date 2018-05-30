@@ -43,8 +43,9 @@ public class CommentServiceJPA implements CommentService {
 
     @Override
     public void editComment(Comment comment) {
-        entityManager.merge(comment);
-
+        Comment dbComment = entityManager.merge(comment);
+        dbComment.setComment(comment.getComment());
+        System.out.println(">>>>>>>>>>>> " + dbComment);
     }
 
     public Comment getComment(int id){
@@ -54,8 +55,8 @@ public class CommentServiceJPA implements CommentService {
 
 
     @Override
-    public void deleteComment(int id) {
-        entityManager.remove(getComment(id));
+    public void deleteComment(Comment comment) {
+        entityManager.remove(entityManager.merge(comment));
     }
 
 

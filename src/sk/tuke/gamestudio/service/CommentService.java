@@ -12,7 +12,7 @@ public interface CommentService {
     List getCommentsByUser(String username);
     void editComment (Comment comment);
     Comment getComment (int id);
-    void deleteComment (int id);
+    void deleteComment (Comment comment);
 
 
 }

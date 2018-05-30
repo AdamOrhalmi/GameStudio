@@ -49,7 +49,7 @@ private CommentService commentService;
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public void deleteComment (@PathParam("id") int id){
-        commentService.deleteComment(id);
+        commentService.deleteComment(commentService.getComment(id));
     }
 
     @GET

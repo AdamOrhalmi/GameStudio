@@ -2,6 +2,8 @@ package sk.tuke.gamestudio.client;
 
 import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.entity.Rating;
+import sk.tuke.gamestudio.entity.weather.Weather;
+import sk.tuke.gamestudio.entity.weather.WeatherMap;
 import sk.tuke.gamestudio.kamene.Kamene;
 import sk.tuke.gamestudio.minesweeper.Minesweeper;
 import sk.tuke.gamestudio.pexeso.Pexeso;
@@ -20,8 +22,15 @@ public class Main {
     private static boolean firstGamePlayed = false;
     private static Game game;
     private static Tableviewer tb = new Tableviewer();
+    private static WeatherRestServiceClient weatherService = new WeatherRestServiceClient();
 
     public static void main(String[] args) {
+//               commentService.addComment(new Comment("jano", "kamene", "fsdf"));
+//
+//        Comment c1 = commentService.getComment(1);
+//        c1.setComment(String.valueOf(System.currentTimeMillis()));
+//        System.out.println("fffffff " + c1);
+//        commentService.editComment(c1);
 
         System.out.println("welcome to GameStudio!");
         System.out.println("enter your name: ");
@@ -62,6 +71,9 @@ public class Main {
                     tb.additionalChoices();
                     break;
                 default:
+                    WeatherMap weather = weatherService.getWeather("Kosice");
+                    weatherService.printWeather(weather);
+
                     System.out.println("See you some other time!");
                     System.exit(0);
             }

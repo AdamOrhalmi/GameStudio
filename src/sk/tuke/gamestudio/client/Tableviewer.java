@@ -37,8 +37,12 @@ public class Tableviewer {
 
         switch (o) {
             case Score:
+
+
                 scoreClient.printBestScores(getGameChoice());
                 break;
+
+
             case Comments:
                 System.out.println("What would you like to do? \n" +
                         "1. View comments\n" +
@@ -54,11 +58,12 @@ public class Tableviewer {
                         break;
                     case 2:
 
-                       List<Comment>commentList = commentClient.getCommentsByUser(username);
-                       commentClient.printComments(commentList);
+                        List<Comment> commentList = commentClient.getCommentsByUser(username);
+                        commentClient.printComments(commentList);
                         System.out.println("Select comment to modify: ");
-                       int index = Integer.parseInt(readLine())-1;
-                       Comment c= commentList.get(index);
+                        int index = Integer.parseInt(readLine()) - 1;
+                        Comment c = commentList.get(index);
+
                         System.out.println("What would you like to do with this comment?\n" +
                                 "1. Edit comment\n" +
                                 "2. Delete comment");
@@ -71,12 +76,13 @@ public class Tableviewer {
                                 commentClient.editComment(c);
                                 break;
                             case 2:
-                                commentClient.deleteComment(c.getIdent());
+                                System.out.println("are you sure you want to delete this comment? (y/n)");
+                                String decision = readLine();
+                                if (decision.equals("y")) commentClient.deleteComment(c);
                                 break;
                             default:
-
                         }
-                       break;
+                        break;
                 }
 
                 break;
@@ -94,7 +100,11 @@ public class Tableviewer {
 
     private String readLine() {
         try {
-            return input.readLine();
+            String s = input.readLine();
+            if (s == null) {
+                s = "1";
+            }
+            return s;
         } catch (IOException e) {
             System.err.println("wrong input, please try again");
             return null;

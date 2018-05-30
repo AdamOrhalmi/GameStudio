@@ -37,7 +37,8 @@ public class ScoreRestServiceClient implements ScoreService {
                     .get(new GenericType<List<Score>>() {
                     });
         } catch (Exception e) {
-            throw new RuntimeException("Error loading score", e);
+            System.err.println("Error loading score"+ e.getMessage());
+            return null;
         }
     }
 
