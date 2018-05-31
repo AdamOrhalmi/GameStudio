@@ -23,7 +23,8 @@ public class ScoreRestServiceClient implements ScoreService {
                     .request(MediaType.APPLICATION_JSON)
                     .post(Entity.entity(score, MediaType.APPLICATION_JSON), Response.class);
         } catch (Exception e) {
-            throw new RuntimeException("Error saving score", e);
+            System.err.println("Error saving score"+ e.getMessage());
+
         }
     }
 
@@ -52,7 +53,8 @@ public class ScoreRestServiceClient implements ScoreService {
                     .get(new GenericType<List<Score>>() {
                     });
         } catch (Exception e) {
-            throw new RuntimeException("Error loading score", e);
+            System.err.println("Error loading score"+ e.getMessage());
+            return null;
         }
     }
 
@@ -66,12 +68,17 @@ public class ScoreRestServiceClient implements ScoreService {
                     .get(new GenericType<Score>() {
                     });
         } catch (Exception e) {
-            throw new RuntimeException("Error loading score", e);
+            System.err.println("Error loading score"+ e.getMessage());
+            return null;
         }
     }
 
     public void printBestScores(String gameName) {
         List<Score> highScores = getBestScoresForGame(gameName);
+        if(highScores.isEmpty()){
+            System.err.println("This list is empty. ");
+            return;
+        }
         System.out.println(" HALL OF FAME- " + gameName);
         for (int i = 0; i < highScores.size(); i++) {
             System.out.println((i + 1) + ". " + highScores.get(i).getPlayer());
@@ -88,7 +95,7 @@ public class ScoreRestServiceClient implements ScoreService {
                     .request(MediaType.APPLICATION_JSON)
                     .delete();
         } catch (Exception e) {
-            throw new RuntimeException("Error saving score", e);
+            System.err.println("Error deleting score"+e.getMessage());
         }
 
     }

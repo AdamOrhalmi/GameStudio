@@ -23,15 +23,19 @@ public class WeatherRestServiceClient {
                     .get(new GenericType<WeatherMap>() {
                     });
         } catch (Exception e) {
-            throw new RuntimeException("Error loading weather", e);
+            System.err.println("Error loading weather"+ e.getMessage());
+            return null;
         }
     }
 
     public void printWeather(WeatherMap weatherMap){
+        if(weatherMap==null){
+            return;
+        }
         System.out.println("Current weather in "+weatherMap.getName()+": ");
         for(Weather w:weatherMap.getWeather())
             System.out.println(w.getDescription());
-        System.out.println(weatherMap.getMain().getTemp()+" degrees");
+        System.out.println(weatherMap.getMain().getTemp()+" °C");
 
     }
 

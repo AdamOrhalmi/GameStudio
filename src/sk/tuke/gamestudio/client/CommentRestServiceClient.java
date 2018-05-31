@@ -26,7 +26,8 @@ public class CommentRestServiceClient implements CommentService {
                     .post(Entity.entity(comment, MediaType.APPLICATION_JSON), Response.class);
 
         } catch (Exception e) {
-            throw new RuntimeException("Error uploading comment", e);
+            System.err.println("Error uploading comment"+ e.getMessage());
+
         }
     }
 
@@ -40,7 +41,8 @@ public class CommentRestServiceClient implements CommentService {
                     .get(new GenericType<List<Comment>>() {
                     });
         } catch (Exception e) {
-            throw new RuntimeException("Error loading comment", e);
+            System.err.println("Error downloading comments"+ e.getMessage());
+            return null;
         }
 
     }
@@ -55,7 +57,8 @@ public class CommentRestServiceClient implements CommentService {
                     .get(new GenericType<List<Comment>>() {
                     });
         } catch (Exception e) {
-            throw new RuntimeException("Error loading comments", e);
+            System.err.println("Error downloading comments"+ e.getMessage());
+            return null;
         }
     }
 
@@ -69,7 +72,8 @@ public class CommentRestServiceClient implements CommentService {
                     .get(new GenericType<List<Comment>>() {
                     });
         } catch (Exception e) {
-            throw new RuntimeException("Error loading comment", e);
+            System.err.println("Error downloading comments"+ e.getMessage());
+            return null;
         }
     }
 
@@ -83,7 +87,8 @@ public class CommentRestServiceClient implements CommentService {
                     .request(MediaType.APPLICATION_JSON)
                     .post(Entity.entity(comment, MediaType.APPLICATION_JSON), Response.class);
         } catch (Exception e) {
-            throw new RuntimeException("Error saving comment", e);
+            System.err.println("Error editing comment"+ e.getMessage());
+
         }
 
     }
@@ -98,7 +103,8 @@ public class CommentRestServiceClient implements CommentService {
                     .get(new GenericType<Comment>() {
                     });
         } catch (Exception e) {
-            throw new RuntimeException("Error loading comments", e);
+             System.err.println("Error downloading comment"+ e.getMessage());
+            return null;
         }
     }
 
@@ -112,7 +118,8 @@ public class CommentRestServiceClient implements CommentService {
                     .request(MediaType.APPLICATION_JSON)
                     .delete(Response.class);
         } catch (Exception e) {
-            throw new RuntimeException("Error deleting comment", e);
+            System.err.println("Error deleting comment"+ e.getMessage());
+
         }
 
 
@@ -120,7 +127,7 @@ public class CommentRestServiceClient implements CommentService {
 
     public void printComments(List<Comment> commentList) {
         if (commentList.isEmpty()) {
-            System.out.println("This bitch empty!");
+
             return;
         }
         System.out.println("User comments: \n");
@@ -135,4 +142,3 @@ public class CommentRestServiceClient implements CommentService {
     }
 
 }
-//todo implementovat delet na score, comment, edit na comment, vymysliet este dajaky mdb

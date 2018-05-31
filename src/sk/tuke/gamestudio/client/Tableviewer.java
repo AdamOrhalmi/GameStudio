@@ -24,12 +24,19 @@ public class Tableviewer {
 
         for (TableOption option : TableOption.values()) {
             System.out.printf("%d. %s%n", option.ordinal() + 1, option);
+
         }
+        System.out.println("Option: ");
         int selection = -1;
         do {
-            System.out.println("Option: ");
-
-            selection = Integer.parseInt(readLine());
+            try {
+                selection = Integer.parseInt(readLine());
+            } catch (NumberFormatException e) {
+                System.err.println("Please write numeric choice.");
+            }
+            if( selection <= 0 || selection > TableOption.values().length){
+                System.err.println("Wrong input. try again.");
+            }
 
         } while (selection <= 0 || selection > TableOption.values().length);
 
@@ -47,10 +54,14 @@ public class Tableviewer {
                 System.out.println("What would you like to do? \n" +
                         "1. View comments\n" +
                         "2. Modify my comments");
-                selection = Integer.parseInt(readLine());
+                try {
+                    selection = Integer.parseInt(readLine());
+                } catch (NumberFormatException e) {
+                    System.err.println("Please write numeric choice.");
+                }
                 switch (selection) {
                     case 1:
-                        if (gamefiltering()) {
+                        if (filterGames()) {
                             commentClient.printComments(commentClient.getCommentsByGame(getGameChoice().toLowerCase()));
                         } else {
                             commentClient.printComments(commentClient.getAllComments());
@@ -67,7 +78,11 @@ public class Tableviewer {
                         System.out.println("What would you like to do with this comment?\n" +
                                 "1. Edit comment\n" +
                                 "2. Delete comment");
-                        selection = Integer.parseInt(readLine());
+                        try {
+                            selection = Integer.parseInt(readLine());
+                        } catch (NumberFormatException e) {
+                            System.err.println("Please write numeric choice.");
+                        }
                         switch (selection) {
                             case 1:
                                 System.out.println("Please enter edited comment:");
@@ -89,7 +104,7 @@ public class Tableviewer {
             case Rating:
                 System.out.println("--GAME RATING--\n");
                 for (Games game : Games.values()) {
-                    ratingClient.getAvgRating(game.toString().toLowerCase());
+                    ratingClient.getAvgRating(game.toString());
                 }
                 break;
 
@@ -111,7 +126,7 @@ public class Tableviewer {
         }
     }
 
-    private boolean gamefiltering() {
+    private boolean filterGames() {
         System.out.println("all results(1) or game specific only(2)? ");
 
         String choice = readLine();

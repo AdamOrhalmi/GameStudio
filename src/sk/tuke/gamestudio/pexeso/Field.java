@@ -7,22 +7,13 @@ import java.util.List;
 import java.util.Random;
 
 public class Field {
-    /**
-     * Playing field tiles.
-     */
+
     private final Tile[][] tiles;
 
     private final int rowCount;
 
     private final int columnCount;
 
-
-    /**
-     * Constructor.
-     *
-     * @param rowCount    row count
-     * @param columnCount column count
-     */
     public Field(int rowCount, int columnCount) {
         this.rowCount = rowCount;
         this.columnCount = columnCount;
@@ -126,11 +117,7 @@ public class Field {
             }
         }
     }
-    /**
-     * Returns true if game is solved, false otherwise.
-     *
-     * @return true if game is solved, false otherwise
-     */
+
     public boolean isSolved() {
         for (int row = 0; row < this.getRowCount(); row++) {
             for (int column = 0; column < this.getColumnCount(); column++) {
@@ -153,25 +140,10 @@ public class Field {
         return true;
     }
 
-    /**
-     * Returns number of adjacent mines for a tile at specified position in the field.
-     *
-     * @param row    row number.
-     * @param column column number.
-     * @return number of adjacent mines.
-     */
-
-
-    /**
-     * Field row count. Rows are indexed from 0 to (rowCount - 1).
-     */
     public int getRowCount() {
         return rowCount;
     }
 
-    /**
-     * Column count. Columns are indexed from 0 to (columnCount - 1).
-     */
     public int getColumnCount() {
         return columnCount;
     }

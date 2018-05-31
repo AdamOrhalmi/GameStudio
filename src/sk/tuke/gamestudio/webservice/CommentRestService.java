@@ -11,6 +11,7 @@ import java.util.List;
 
 @Path("/comment")
 public class CommentRestService {
+
 @EJB
 private CommentService commentService;
 

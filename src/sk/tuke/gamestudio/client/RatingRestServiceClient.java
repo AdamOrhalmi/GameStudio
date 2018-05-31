@@ -28,12 +28,13 @@ public class RatingRestServiceClient implements RatingService {
                     .request(MediaType.APPLICATION_JSON)
                     .post(Entity.entity(rating, MediaType.APPLICATION_JSON), Response.class);
         } catch (Exception e) {
-            throw new RuntimeException("Error uploading rating", e);
+
+            System.err.println("Error uploading rating"+ e.getMessage());
         }
     }
 
     @Override
-    public List getRating() {
+    public List<Rating> getRating() {
         try {
             Client client = ClientBuilder.newClient();
             return client.target(URL)
@@ -42,7 +43,8 @@ public class RatingRestServiceClient implements RatingService {
                     .get(new GenericType<List<Rating>>() {
                     });
         } catch (Exception e) {
-            throw new RuntimeException("Error loading rating", e);
+            System.err.println("Error loading rating"+ e.getMessage());
+            return null;
         }
     }
 
@@ -50,7 +52,7 @@ public class RatingRestServiceClient implements RatingService {
     @Override
     public String getAvgRating(String game) {
 
-        String rating = "UNRATED YET";
+        String rating;
         try {
             Client client = ClientBuilder.newClient();
             rating = client.target(URL)
@@ -59,13 +61,16 @@ public class RatingRestServiceClient implements RatingService {
                     .get(new GenericType<String>() {
                     });
         } catch (Exception e) {
-            //System.err.println("Error loading rating "+ e);
-            System.out.println(game + "\n      --> unrated yet");
+            game = game.substring(0, 1).toUpperCase() + game.substring(1);
 
+            //System.err.println("Error loading rating "+ e);
+            System.out.println(game + "\n      --> unrated yet\n");
+            return null;
         }
         rating = rating.substring(0, (rating.length() < 4 ? rating.length() : 4));
 
         game = game.substring(0, 1).toUpperCase() + game.substring(1);
+
         System.out.println(game + "\n      --> " + rating + "/10\n");
 
         return rating;

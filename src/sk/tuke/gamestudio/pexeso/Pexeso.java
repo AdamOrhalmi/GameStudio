@@ -1,8 +1,6 @@
 package sk.tuke.gamestudio.pexeso;
 
-import sk.tuke.gamestudio.client.Game;
-
-public class Pexeso extends Game {
+public class Pexeso{
 
     private static long startMillis;
     static ConsoleUI cui;
@@ -18,8 +16,5 @@ public class Pexeso extends Game {
         return (int) (System.currentTimeMillis() - startMillis) / 1000;
     }
 
-    @Override
-    public String getGameName() {
-        return "pexeso";
-    }
+
 }

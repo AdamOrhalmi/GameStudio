@@ -14,7 +14,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Stateless
-public class RatingServiceJPA implements RatingService{
+public class RatingServiceJPA implements RatingService {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -25,33 +25,32 @@ public class RatingServiceJPA implements RatingService{
     @Inject
     private JMSContext context;
 
-    public void addRating (Rating rating){
+    public void addRating(Rating rating) {
         Rating r;
         try {
             r = (Rating) entityManager.createNamedQuery("Rating.getExactRating")
                     .setParameter("game", rating.getGame())
                     .setParameter("username", rating.getUsername())
                     .getSingleResult();
-        }catch (NoResultException e){
+        } catch (NoResultException e) {
             entityManager.persist(rating);
             return;
         }
         r.setRating(rating.getRating());
         entityManager.merge(r);
-        String text = "rating changed for " + r.getUsername()+"'s comment on "+r.getGame()+": "+r.getRating();
+        String text = "rating changed for " + r.getUsername() + "'s comment on " + r.getGame() + ": " + r.getRating();
         context.createProducer().send(queue, context.createTextMessage(text));
     }
 
-    public List getRating (){
+    public List<Rating> getRating() {
         return entityManager.createNamedQuery("Rating.getAllRating")
                 .getResultList();
     }
 
-    public String getAvgRating(String game){
+    public String getAvgRating(String game) {
         return entityManager.createNamedQuery("Rating.getAvgGameRating")
                 .setParameter("game", game).getSingleResult().toString();
     }
-
 
 
 }

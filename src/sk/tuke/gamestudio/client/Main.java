@@ -2,11 +2,7 @@ package sk.tuke.gamestudio.client;
 
 import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.entity.Rating;
-import sk.tuke.gamestudio.entity.weather.Weather;
 import sk.tuke.gamestudio.entity.weather.WeatherMap;
-import sk.tuke.gamestudio.kamene.Kamene;
-import sk.tuke.gamestudio.minesweeper.Minesweeper;
-import sk.tuke.gamestudio.pexeso.Pexeso;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,8 +15,8 @@ public class Main {
     private static RatingRestServiceClient ratingService = new RatingRestServiceClient();
     private static CommentRestServiceClient commentService = new CommentRestServiceClient();
     private static ScoreRestServiceClient scoreService = new ScoreRestServiceClient();
-    private static boolean firstGamePlayed = false;
-    private static Game game;
+    private static boolean gamePlayed = false;
+
     private static Tableviewer tb = new Tableviewer();
     private static WeatherRestServiceClient weatherService = new WeatherRestServiceClient();
 
@@ -42,70 +38,71 @@ public class Main {
 
        tb.setUsername(username);
 
-
         System.out.println("what would you like to play?");
+
         while (true) {
-            int i = 1;
+            int gamesCount = 1;
             for (Games g : Games.values()) {
-                System.out.println(i + ". " + g.toString());
-                i++;
+                System.out.println((g.ordinal()+1) + ". " + g.toString());
+                gamesCount++;
             }
 
-            System.out.println(i + ". View tables\nAnything else: Exit");
-            int s = Integer.parseInt(readLine());
+            System.out.println(gamesCount + ". View tables\nOther number: Exit");
 
-            switch (s) {
-                case 1:
-                    game = new Minesweeper(username);
-                    firstGamePlayed = true;
-                    break;
-                case 2:
-                    game = new Kamene(username);
-                    firstGamePlayed = true;
-                    break;
-                case 3:
-                    game = new Pexeso(username);
-                    firstGamePlayed = true;
-                    break;
-                case 4:
+            int switchInput=0;
+            while (switchInput == 0) {
+
+                try {
+                    switchInput= Integer.parseInt(readLine());
+                } catch (NumberFormatException e) {
+                    System.err.println("Wrong input format. Try again.");
+                }
+            }
+            String chosenGame="GAME NOT FOUND";
+            for (Games g : Games.values()) {
+                if(switchInput==g.ordinal()+1){
+                    chosenGame=g.getGameName();
+                    g.startGame(username);
+                    gamePlayed =true;
+                }
+            }if(!gamePlayed){
+                if(switchInput==gamesCount){
                     tb.additionalChoices();
-                    break;
-                default:
-                    WeatherMap weather = weatherService.getWeather("Kosice");
+                }else { WeatherMap weather = weatherService.getWeather("Kosice");
                     weatherService.printWeather(weather);
 
                     System.out.println("See you some other time!");
-                    System.exit(0);
+                    System.exit(0);}
+
             }
-            if (firstGamePlayed) {
+            if (gamePlayed) {
                 System.out.println("Thank you for playing! would you like to leave us a comment? y/n");
-                String c = readLine();
-                if (c.equals("y")) {
+                String input = readLine();
+                if (input.equals("y")) {
                     System.out.println("write your comment here: ");
-                    c = readLine();
-                    Comment comment = new Comment(username, game.getGameName(), c);
+                    input = readLine();
+                    Comment comment = new Comment(username, chosenGame, input);
                     commentService.addComment(comment);
                 }
                 System.out.println("Would you like to rate our game? y/n");
-                c = readLine();
+                input = readLine();
 
-                if (c.equals("y")) {
+                if (input.equals("y")) {
                     System.out.println("enter your rating (1-10) : ");
-                    c = readLine();
-                    int rate = Integer.parseInt(c);
-                    Rating rating = new Rating(username, game.getGameName(), rate);
+                    input = readLine();
+                    int rate = Integer.parseInt(input);
+                    Rating rating = new Rating(username, chosenGame, rate);
 
                     ratingService.addRating(rating);
                 }
             }
 
-            firstGamePlayed = false;
+            gamePlayed = false;
 
             System.out.println("Thank you! What would you like to play now?");
         }
 
     }
-
 
     private static String readLine() {
         try {

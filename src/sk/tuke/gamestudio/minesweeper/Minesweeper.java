@@ -1,7 +1,5 @@
 package sk.tuke.gamestudio.minesweeper;
 
-import org.eclipse.persistence.oxm.sequenced.Setting;
-import sk.tuke.gamestudio.client.Game;
 import  sk.tuke.gamestudio.minesweeper.consoleui.ConsoleUI;
 import  sk.tuke.gamestudio.minesweeper.consoleui.UserInterface;
 import  sk.tuke.gamestudio.minesweeper.core.Field;
@@ -9,7 +7,7 @@ import  sk.tuke.gamestudio.minesweeper.core.Field;
 /**
  * Main application class.
  */
-public class Minesweeper extends Game {
+public class Minesweeper{
     /** User interface. */
     private UserInterface userInterface;
     private static long startMillis;
@@ -66,7 +64,5 @@ public class Minesweeper extends Game {
     }
 
 
-    public String getGameName() {
-        return "minesweeper";
-    }
+
 }

@@ -2,7 +2,6 @@ package sk.tuke.gamestudio.service;
 
 
 
-import sk.tuke.gamestudio.client.Game;
 import sk.tuke.gamestudio.entity.Comment;
 
 import javax.ejb.Stateless;
@@ -23,19 +22,19 @@ public class CommentServiceJPA implements CommentService {
     }
 
     @Override
-    public List getCommentsByGame(String game) {
+    public List<Comment> getCommentsByGame(String game) {
         return entityManager.createNamedQuery("Comment.getCommentByGame")
                 .setParameter("game", game).getResultList();
     }
 
     @Override
-    public List getAllComments() {
+    public List<Comment> getAllComments() {
         return entityManager.createNamedQuery("Comment.getAllComments")
                 .getResultList();
     }
 
     @Override
-    public List getCommentsByUser(String username) {
+    public List<Comment> getCommentsByUser(String username) {
         return entityManager.createNamedQuery("Comment.getCommentsByUser")
                 .setParameter("username", username)
                 .getResultList();
