@@ -25,7 +25,7 @@ public class ScoreServiceImplJPA implements ScoreService {
 
     @Override
     public void addScore(Score score) throws ScoreException {
-        if (score.getPoints() > 5000) {
+        if (score.getPoints() > 10000) {
             String text = "congratulations for your very high score! " + score.getPoints();
             context.createProducer().send(queue, context.createTextMessage(text));
         }
@@ -35,13 +35,13 @@ public class ScoreServiceImplJPA implements ScoreService {
 
     @Override
     public List<Score> getBestScoresForGame(String game) throws ScoreException {
-        return entityManager.createNamedQuery("Score.getBestScoresForGame")
+        return entityManager.createNamedQuery("Score.getBestScoresForGame", Score.class)
                 .setParameter("game", game).setMaxResults(10).getResultList();
     }
 
     @Override
     public List<Score> getScoresByUser(String name) {
-        return entityManager.createNamedQuery("Score.getBestScoresByUser")
+        return entityManager.createNamedQuery("Score.getBestScoresByUser", Score.class)
                 .getResultList();
     }
 

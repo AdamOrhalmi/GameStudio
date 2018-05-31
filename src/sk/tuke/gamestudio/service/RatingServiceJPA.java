@@ -28,7 +28,7 @@ public class RatingServiceJPA implements RatingService {
     public void addRating(Rating rating) {
         Rating r;
         try {
-            r = (Rating) entityManager.createNamedQuery("Rating.getExactRating")
+            r = entityManager.createNamedQuery("Rating.getExactRating", Rating.class)
                     .setParameter("game", rating.getGame())
                     .setParameter("username", rating.getUsername())
                     .getSingleResult();
@@ -43,7 +43,7 @@ public class RatingServiceJPA implements RatingService {
     }
 
     public List<Rating> getRating() {
-        return entityManager.createNamedQuery("Rating.getAllRating")
+        return entityManager.createNamedQuery("Rating.getAllRating", Rating.class)
                 .getResultList();
     }
 

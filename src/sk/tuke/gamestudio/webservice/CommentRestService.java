@@ -17,7 +17,7 @@ private CommentService commentService;
 
 
     @POST
-    @Path("/new")
+    //@Path("/new")
     @Produces(MediaType.APPLICATION_JSON)
     public Comment addComment (Comment comment){
 
@@ -60,8 +60,8 @@ private CommentService commentService;
         return commentService.getComment(id);
     }
 
-    @POST
-    @Path("/edit")
+    @PUT
+   // @Path("/edit")
     @Produces(MediaType.APPLICATION_JSON)
     public void editComment (Comment comment ){
         commentService.editComment(comment);

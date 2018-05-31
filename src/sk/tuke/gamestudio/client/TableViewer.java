@@ -1,13 +1,14 @@
 package sk.tuke.gamestudio.client;
 
 import sk.tuke.gamestudio.entity.Comment;
+import sk.tuke.gamestudio.entity.Score;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
-public class Tableviewer {
+public class TableViewer {
     private static BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     private static RatingRestServiceClient ratingClient = new RatingRestServiceClient();
     private static ScoreRestServiceClient scoreClient = new ScoreRestServiceClient();
@@ -44,11 +45,24 @@ public class Tableviewer {
 
         switch (o) {
             case Score:
+                System.out.println("What would you like to do? \n" +
+                        "1. View scores\n" +
+                        "2. Remove my score");
+                try {
+                    selection = Integer.parseInt(readLine());
+                } catch (NumberFormatException e) {
+                    System.err.println("Please write numeric choice.");
+                }
+                switch (selection) {
+                    case 1:
+                        scoreClient.printBestScores(getGameChoice());
+                        break;
+                    case 2:
+                        removeScore();
+                        break;
+                }
 
-
-                scoreClient.printBestScores(getGameChoice());
                 break;
-
 
             case Comments:
                 System.out.println("What would you like to do? \n" +
@@ -68,38 +82,9 @@ public class Tableviewer {
                         }
                         break;
                     case 2:
-
-                        List<Comment> commentList = commentClient.getCommentsByUser(username);
-                        commentClient.printComments(commentList);
-                        System.out.println("Select comment to modify: ");
-                        int index = Integer.parseInt(readLine()) - 1;
-                        Comment c = commentList.get(index);
-
-                        System.out.println("What would you like to do with this comment?\n" +
-                                "1. Edit comment\n" +
-                                "2. Delete comment");
-                        try {
-                            selection = Integer.parseInt(readLine());
-                        } catch (NumberFormatException e) {
-                            System.err.println("Please write numeric choice.");
-                        }
-                        switch (selection) {
-                            case 1:
-                                System.out.println("Please enter edited comment:");
-                                String newComment = readLine();
-                                c.setComment(newComment);
-                                commentClient.editComment(c);
-                                break;
-                            case 2:
-                                System.out.println("are you sure you want to delete this comment? (y/n)");
-                                String decision = readLine();
-                                if (decision.equals("y")) commentClient.deleteComment(c);
-                                break;
-                            default:
-                        }
+                        modifyComments();
                         break;
                 }
-
                 break;
             case Rating:
                 System.out.println("--GAME RATING--\n");
@@ -107,10 +92,7 @@ public class Tableviewer {
                     ratingClient.getAvgRating(game.toString());
                 }
                 break;
-
         }
-
-
     }
 
     private String readLine() {
@@ -128,7 +110,6 @@ public class Tableviewer {
 
     private boolean filterGames() {
         System.out.println("all results(1) or game specific only(2)? ");
-
         String choice = readLine();
         switch (choice) {
             case "1":
@@ -142,27 +123,86 @@ public class Tableviewer {
 
     private String getGameChoice() {
         System.out.println("which game do you want to do this for?");
-
         for (Games game : Games.values()) {
             System.out.printf("%d. %s%n", game.ordinal() + 1, game);
         }
-
-        int selection = -1;
+        int selection = 0;
         do {
             System.out.println("Choice: ");
 
             selection = Integer.parseInt(readLine());
 
-        } while (selection <= 0 || selection > Games.values().length);
+        } while (selection <1 || selection > Games.values().length);
         return Games.values()[selection - 1].toString();
     }
 
+    private void modifyComments() {
+        List<Comment> commentList = commentClient.getCommentsByUser(username);
+        commentClient.printComments(commentList);
+        System.out.println("Select comment to modify: ");
+        int index = Integer.parseInt(readLine()) - 1;
+        Comment c = commentList.get(index);
 
-    private void stuff() {
+        System.out.println("What would you like to do with this comment?\n" +
+                "1. Edit comment\n" +
+                "2. Delete comment");
+        int selection=0;
+        while(selection==0){
+        try {
+           selection = Integer.parseInt(readLine());
+        } catch (NumberFormatException e) {
+            System.err.println("Please write numeric choice.");
+        }
+        }
+        switch (selection) {
+            case 1:
+                System.out.println("Please enter edited comment:");
+                String newComment = readLine();
+                c.setComment(newComment);
+                commentClient.editComment(c);
+                break;
+            case 2:
+                System.out.println("are you sure you want to delete this comment? (y/n)");
+                String decision = readLine();
+                if (decision.equals("y")) commentClient.deleteComment(c);
+                break;
+            default:
+                break;
+        }
 
     }
 
-}
+    private void removeScore(){
+        List<Score> scoreList = scoreClient.getScoresByUser(username);
+        if(scoreList.isEmpty()){
+            System.out.println("You have no scores saved yet.");
+            return;
+        }
+        scoreClient.printBestScores(scoreList);
+        System.out.println("Select comment to delete: ");
+        int index =-2;
+        while(index==-2)
+        try {
+           index = Integer.parseInt(readLine())-1;
+        } catch (NumberFormatException e) {
+            System.err.println("Please write numeric choice.");
+        }
+
+        Score score;
+        try {
+            score = scoreList.get(index);
+        } catch (Exception e) {
+            System.err.println("Score not found.");
+            return;
+        }
+        System.out.println("are you sure you want to delete this score? (y/n)");
+        String decision = readLine();
+        if (decision.equals("y")) scoreClient.removeScore(score.getIdent());
+        }
+
+    }
+
+
 
 enum TableOption {
 

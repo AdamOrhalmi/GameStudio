@@ -17,7 +17,7 @@ public class Main {
     private static ScoreRestServiceClient scoreService = new ScoreRestServiceClient();
     private static boolean gamePlayed = false;
 
-    private static Tableviewer tb = new Tableviewer();
+    private static TableViewer tb = new TableViewer();
     private static WeatherRestServiceClient weatherService = new WeatherRestServiceClient();
 
     public static void main(String[] args) {

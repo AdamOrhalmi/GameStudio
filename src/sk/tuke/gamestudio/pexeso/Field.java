@@ -30,10 +30,7 @@ public class Field {
     public boolean openTile(int row, int column) {
     //returns whether the last two tiles need to be covered
         Tile tile = tiles[row][column];
-        if(tile.isUncovered()){
-            System.err.println("This tile is uncovered already!");
-            return true;
-        }
+
         tile.open();
         if(oddTurn){
             savedRow=row;

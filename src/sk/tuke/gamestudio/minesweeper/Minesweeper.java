@@ -45,10 +45,6 @@ public class Minesweeper{
                 settings = Settings.load();
         }
 
-
-
-
-
         Field field = new Field(settings.getRowCount(), settings.getColumnCount(), settings.getMineCount());
 
         if(userInterface.newGameStarted(field)){

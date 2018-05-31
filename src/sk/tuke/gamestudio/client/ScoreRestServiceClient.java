@@ -86,6 +86,20 @@ public class ScoreRestServiceClient implements ScoreService {
         }
     }
 
+    public void printBestScores(List<Score> highScores) {
+
+        if(highScores.isEmpty()){
+            System.err.println("This list is empty. ");
+            return;
+        }
+        System.out.println(" HALL OF FAME- " + highScores.get(0).getPlayer());
+        for (int i = 0; i < highScores.size(); i++) {
+            System.out.println((i + 1) + ". " + highScores.get(i).getPlayer());
+            System.out.println("   ------------> " + highScores.get(i).getPoints() + " points");
+        }
+    }
+
+
 
     @Override
     public void removeScore(Integer id) {

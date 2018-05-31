@@ -23,19 +23,19 @@ public class CommentServiceJPA implements CommentService {
 
     @Override
     public List<Comment> getCommentsByGame(String game) {
-        return entityManager.createNamedQuery("Comment.getCommentByGame")
+        return entityManager.createNamedQuery("Comment.getCommentByGame", Comment.class)
                 .setParameter("game", game).getResultList();
     }
 
     @Override
     public List<Comment> getAllComments() {
-        return entityManager.createNamedQuery("Comment.getAllComments")
+        return entityManager.createNamedQuery("Comment.getAllComments", Comment.class)
                 .getResultList();
     }
 
     @Override
     public List<Comment> getCommentsByUser(String username) {
-        return entityManager.createNamedQuery("Comment.getCommentsByUser")
+        return entityManager.createNamedQuery("Comment.getCommentsByUser", Comment.class)
                 .setParameter("username", username)
                 .getResultList();
     }
@@ -48,7 +48,7 @@ public class CommentServiceJPA implements CommentService {
     }
 
     public Comment getComment(int id){
-       return (Comment) entityManager.createNamedQuery("Comment.getCommentByID")
+       return entityManager.createNamedQuery("Comment.getCommentByID", Comment.class)
                 .setParameter("id", id).getSingleResult();
     }
 

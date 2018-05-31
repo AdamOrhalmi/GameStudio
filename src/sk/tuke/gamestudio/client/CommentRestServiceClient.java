@@ -21,7 +21,7 @@ public class CommentRestServiceClient implements CommentService {
 
         try {
             Client client = ClientBuilder.newClient();
-            Response response = client.target(URL + "/new")
+            Response response = client.target(URL)
                     .request(MediaType.APPLICATION_JSON)
                     .post(Entity.entity(comment, MediaType.APPLICATION_JSON), Response.class);
 
@@ -83,9 +83,8 @@ public class CommentRestServiceClient implements CommentService {
         try {
             Client client = ClientBuilder.newClient();
             Response response = client.target(URL)
-                    .path("/edit")
                     .request(MediaType.APPLICATION_JSON)
-                    .post(Entity.entity(comment, MediaType.APPLICATION_JSON), Response.class);
+                    .put(Entity.entity(comment, MediaType.APPLICATION_JSON), Response.class);
         } catch (Exception e) {
             System.err.println("Error editing comment"+ e.getMessage());
 

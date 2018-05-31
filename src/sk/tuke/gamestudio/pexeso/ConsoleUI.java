@@ -112,7 +112,10 @@ public class ConsoleUI implements Serializable {
             char rowChar = matcher.group(1).charAt(0);
             int row = rowChar - 'a';
             int column = Integer.parseInt(matcher.group(2));
-
+            Tile tile = field.getTile(row, column);
+            if(tile.isUncovered()){
+                System.err.println("This tile is uncovered already!");
+            }
             if (!field.openTile(row, column)) {
                 update();
                 System.err.println("missed, covering last two.");
@@ -123,9 +126,7 @@ public class ConsoleUI implements Serializable {
                 }
                 System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n");
                 field.coverLastTwoTiles(row, column);
-
             }
-
         } else
             System.err.println("not matched.");
 
