@@ -1,5 +1,6 @@
 package sk.tuke.gamestudio.minesweeper.consoleui;
 
+import sk.tuke.gamestudio.client.ExitException;
 import sk.tuke.gamestudio.client.ScoreRestServiceClient;
 import sk.tuke.gamestudio.entity.Score;
 import  sk.tuke.gamestudio.minesweeper.Minesweeper;
@@ -22,7 +23,7 @@ public class ConsoleUI implements UserInterface {
    private BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
    private ScoreRestServiceClient scoreServiceClient = new ScoreRestServiceClient();
    private String name;
-   private Pattern pattern = Pattern.compile("([XMOC])([A-Z])?([\\d]+)?");
+   private Pattern pattern = Pattern.compile("([XMOC])(([A-Z])([\\d]+))?");
 
 
 public ConsoleUI(String name){
@@ -128,37 +129,39 @@ public ConsoleUI(String name){
         Matcher matcher = pattern.matcher(command);
 
 
-        if(matcher.matches()){
-            if(command.equals("C")){
+        if(matcher.matches()) {
+            if (command.equals("C")) {
                 field.solve();
                 return;
             }
 
             char commandChar = matcher.group(1).charAt(0);
-            if(commandChar == 'X'){
-                System.out.println("Goodbye, "+name+".");
-                System.exit(0);
+            if (commandChar == 'X') {
+                System.out.println("Goodbye, " + name + ".");
+                throw new ExitException();
             }
+            try{
 
             char rowChar = matcher.group(2).charAt(0);
-            int row = rowChar -'A';
-            int  column = Integer.parseInt(matcher.group(3));
+            int row = rowChar - 'A';
+            int column = Integer.parseInt(matcher.group(2).substring(1));
 
 
-            switch(commandChar){
+            switch (commandChar) {
 
-                case'M':
-                    System.out.println(row);
-                    System.out.println(column);
-                    field.markTile(row,column);
+                case 'M':
+                    field.markTile(row, column);
                     break;
                 case 'O':
-                    System.out.println(row);
-                    System.out.println(column);
-                    field.openTile(row,column);
+                    field.openTile(row, column);
                     break;
 
             }
+        }catch(Exception e){
+                System.out.println("Wrong input, please try again.");
+                processInput();
+            }
+
         }else {
             System.out.println("Wrong input, please try again.");
             processInput();

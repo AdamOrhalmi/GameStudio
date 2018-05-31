@@ -16,6 +16,7 @@ public class Main {
     private static CommentRestServiceClient commentService = new CommentRestServiceClient();
     private static ScoreRestServiceClient scoreService = new ScoreRestServiceClient();
     private static boolean gamePlayed = false;
+    private static boolean gameInterrupted = false;
 
     private static TableViewer tb = new TableViewer();
     private static WeatherRestServiceClient weatherService = new WeatherRestServiceClient();
@@ -62,10 +63,19 @@ public class Main {
             for (Games g : Games.values()) {
                 if(switchInput==g.ordinal()+1){
                     chosenGame=g.getGameName();
-                    g.startGame(username);
-                    gamePlayed =true;
+                    try {
+                        gamePlayed =true;
+                        g.startGame(username);
+                        gameInterrupted= false;
+                    } catch (ExitException e) {
+                        System.out.println("Game interrupted.");
+                        gameInterrupted = true;
+                    }
+
                 }
-            }if(!gamePlayed){
+
+
+            }if(!gamePlayed&&!gameInterrupted){
                 if(switchInput==gamesCount){
                     tb.additionalChoices();
                 }else { WeatherMap weather = weatherService.getWeather("Kosice");

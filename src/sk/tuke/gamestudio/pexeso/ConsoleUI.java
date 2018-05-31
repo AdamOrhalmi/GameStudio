@@ -14,7 +14,7 @@ public class ConsoleUI implements Serializable {
 
     private BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     private Field field;
-    private String regex = "([A-Za-z])([\\d]*)?";
+    private String regex = "([A-Za-z])([\\d]+)";
     private static final String SAVE_FILE = "savedgame.bin";
     private int timeGameEnded;
     private ScoreRestServiceClient scoreServiceClient = new ScoreRestServiceClient();
@@ -94,17 +94,17 @@ public class ConsoleUI implements Serializable {
 
 
         String command = this.readLine();
-        try {
-            handleInput(command);
+        if (command.equals("c")) {
+            field.solve();
+            return;
+        }
+        try {            handleInput(command);
         } catch (WrongFormatException e) {
             System.err.println(e.getMessage());
             return;
         }
         command = command.toLowerCase();
-        if (command.equals("c")) {
-            field.solve();
-            return;
-        }
+
 
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(command);
